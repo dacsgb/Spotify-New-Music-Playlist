@@ -1,4 +1,4 @@
 .cache
-*.env
+config/
 .venv/
 src/__pycache__/
