@@ -84,7 +84,7 @@ class NewMusicPlaylistFiller:
         for playlist in playlists: self.fill_playlist(playlist)
 
     def fill_playlist(self, playlist: Playlist, max_elements: int = 50):
-        print(f"\tFilling playlist {playlist.name} with {len(playlist.songs)}")
+        print(f"\tFilling playlist {playlist.name} with {len(playlist.songs)} songs")
         new_song_ids = [s.id for s in playlist.songs]
         self.clear_playlist(playlist.id)
         for i in range(0, len(new_song_ids), max_elements):
@@ -95,9 +95,11 @@ class NewMusicPlaylistFiller:
     def genre_sorter(playlists: List[Playlist], songs: Set[Song]) -> Tuple[List[Playlist], Set[Song]] :
         print("Adding songs to relevant playlist")
         for song in songs:
-            for playlist in playlists:
-                if not playlist.genres.isdisjoint(song.genre): 
-                    playlist.songs.add(song)
+            matching_score = [len(playlist.genres.intersection(song.genre)) for playlist in playlists]
+            highest_matching = max(matching_score)
+            if highest_matching == 0: continue
+            matching_playlist = playlists[matching_score.index(highest_matching)]
+            matching_playlist.songs.add(song)
 
         print("Finding outlying songs")
         for playlist in playlists: songs -= playlist.songs

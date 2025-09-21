@@ -22,9 +22,6 @@ def parse_playlist_config(data: Dict[str, Dict[str, str|List[str]]]) -> List[Pla
     playlists = [Playlist(name = playlist_name, **playlist_data) for playlist_name, playlist_data in data.items()]
     return playlists
 
-def setup_app(user_config: UserCredentials, app_config: SpotifyConfiguration, playlists: List[Playlist]): pass
-
-
 def main():
 
     user = parse_user_config(load_yaml('config/user_config.yaml'))
@@ -36,8 +33,6 @@ def main():
                                 playlists = playlists)
     
     app.run()
-
-
 
 if __name__ == "__main__":
     main()
