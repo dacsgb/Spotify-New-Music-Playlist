@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, field
+from typing import List, Set, FrozenSet
 
 @dataclass(frozen= True)
 class UserCredentials:
@@ -18,7 +18,7 @@ class Song:
     id: str
     name: str
     artist: str
-    genre: str
+    genre: FrozenSet[str]
 
     def __eq__(self, value):
         eq = True
@@ -42,5 +42,8 @@ class Album:
 class Playlist:
     name: str
     id: str
-    genres: List[str]
-    songs: Song | None = None
+    songs: Set[Song] = field(default_factory=set)
+    genres: Set[str] | None = None
+
+    def __post_init__(self):
+        self.genres = set() if (self.genres is None) else set(self.genres)
